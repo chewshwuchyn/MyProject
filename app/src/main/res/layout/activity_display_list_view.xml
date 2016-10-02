@@ -15,7 +15,8 @@
         android:id="@+id/view"
         android:layout_below="@+id/bCreate"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@mipmap/ic_launcher"/>
 
     <Button
         android:layout_width="wrap_content"
