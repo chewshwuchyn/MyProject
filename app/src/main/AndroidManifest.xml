@@ -21,7 +21,9 @@
         <activity android:name=".MyProject"/>
         <activity android:name=".DisplayListView" />
         <activity android:name=".Detail" />
-        <activity android:name=".CreateProject"></activity>
+        <activity android:name=".CreateProject"/>
+        <activity android:name=".TaskListView"/>
+        <activity android:name=".TaskDetail"></activity>
 
     </application>
 
