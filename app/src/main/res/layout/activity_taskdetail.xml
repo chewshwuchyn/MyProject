@@ -5,10 +5,13 @@
 
     <TextView
         android:text="ProjectName"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tvProjectName"
-        android:textAppearance="@android:style/TextAppearance.Large" />
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textColor="@color/ListTitle"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="30sp" />
 
     <TextView
         android:text="Task"
@@ -16,4 +19,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvTask"
         android:textAppearance="@android:style/TextAppearance.Large" />
+
+    <TextView
+        android:text="ProjectID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvProjectID"
+        android:textAppearance="@android:style/TextAppearance.Large" />
+
 </LinearLayout>

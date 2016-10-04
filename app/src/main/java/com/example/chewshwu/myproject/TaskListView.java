@@ -103,7 +103,7 @@ public class TaskListView extends AppCompatActivity {
                     Task task = (Task)taskAdapter.getItem(position);
                     Intent intent = new Intent(getApplicationContext(), TaskDetail.class);
                   //  intent.putExtra("json_data", String.valueOf(position));
-              //      intent.putExtra("projectID",task.getProjectID());
+                    intent.putExtra("projectID",task.getProjectID());
                     intent.putExtra("projectName",task.getProjectName());
                     intent.putExtra("totalNoOfTask", task.getTotalNoOfTask());
              //       intent.putExtra("noOfUncompleteTask", task.getNoOfUncompleteTask());

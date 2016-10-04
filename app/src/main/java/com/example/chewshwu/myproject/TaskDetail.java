@@ -1,6 +1,7 @@
 package com.example.chewshwu.myproject;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,6 +14,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 
 /**
@@ -21,36 +30,101 @@ import java.util.HashMap;
 
 public class TaskDetail extends AppCompatActivity{
 
- //   String projectName;
-    TextView PName, task;
- //   int totalNoOfTask;
+    String projectName;
+    int totalNoOfTask, projectID;
+
+    private TextView PName, task, pID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_taskdetail);
 
-    //    Bundle bundle = getIntent().getExtras();
- //       projectName = bundle.getString("projectName");
-  //      totalNoOfTask = bundle.getInt("totalNoOfTask");
+        Bundle bundle = getIntent().getExtras();
+        projectID = bundle.getInt("projectID");
+        projectName = bundle.getString("projectName");
+        totalNoOfTask = bundle.getInt("totalNoOfTask");
 
         PName = (TextView)findViewById(R.id.tvProjectName);
-        PName.setText("TEST");
         task = (TextView)findViewById(R.id.tvTask);
-        task.setText("TEST2");
+        pID = (TextView)findViewById(R.id.tvProjectID);
 
-  //      showTask();
+        showTask();
+
+        BackgroundWorker backgroundWorker = new BackgroundWorker();
+        backgroundWorker.execute(getString(projectID));
+
+    }
+
+    public class BackgroundWorker extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+        String JSON_STRING;
+        @Override
+        protected String doInBackground(String... params) {
+            String projectID = params[0];
+            String register_url = "http://192.168.137.1/project6/taskdetail.php";
+
+            try {
+
+                URL url = new URL(register_url);
+                String urlParams = "projectID=" + projectID;
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(urlParams.getBytes());
+                outputStream.flush();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ((JSON_STRING = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(JSON_STRING + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return stringBuilder.toString().trim();
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+
+        }
+
+
+    }
+        public void showTask() {
+            PName.setText(projectName);
+            task.setText("Total Number of Task :" + Integer.toString(totalNoOfTask));
+            pID.setText("Project ID :" + Integer.toString(projectID));
+
+
+        }
 
 
     }
 
 
- //   public void showTask() {
-//        PName.setText(projectName);
-//        task.setText(totalNoOfTask);
 
-//    }
-}
+
+
+
+
 
 
    /**     public void updateproject() {
