@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="74dp">
+
+        <TextView
+            android:text="Project ID:"
+            android:layout_width="173dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvProjID"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textColor="@color/ListTitle"
+            android:textSize="24sp" />
+
+        <EditText
+            android:layout_width="248dp"
+            android:layout_height="wrap_content"
+            android:inputType="text|textPersonName"
+            android:ems="10"
+            android:id="@+id/etProjID"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:layout_weight="1"
+            android:hint="ProjectID" />
+
+    </LinearLayout>
+
+    <Button
+        android:text="Show Task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bTaskList"
+        android:onClick="ShowTask"/>
+
+    <Button
+        android:text="Create New Task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bCreateTask" />
+
+    <Button
+        android:text="Show All Project"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bAllProject"
+        android:onClick="ShowAllProject" />
+
+
+</LinearLayout>

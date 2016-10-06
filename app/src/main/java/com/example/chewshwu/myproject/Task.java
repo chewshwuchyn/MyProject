@@ -12,6 +12,7 @@ public class Task {
         private int totalNoOfTask, noOfUncompleteTask;
         private int taskID;
 
+
         public Task(int projectID, String projectName, int totalNoOfTask, int noOfUncompleteTask ){
             this.setProjectID(projectID);
             this.setProjectName(projectName);
@@ -20,13 +21,13 @@ public class Task {
 
 
         }
- //       public Task(String taskName, String taskStartDate, String taskEndDate, int taskID) {
- //           this.setTaskName(taskName);
- //           this.setTaskStartDate(taskStartDate);
- //           this.setTaskEndDate(taskEndDate);
- //           this.setTaskID(taskID);
+  //      public Task(String taskName, String taskStartDate, String taskEndDate, int taskID) {
+  //          this.setTaskName(taskName);
+  //          this.setTaskStartDate(taskStartDate);
+  //          this.setTaskEndDate(taskEndDate);
+  //          this.setTaskID(taskID);
 //
- //       }
+  //      }
 
         public String getProjectName(){
             return projectName;

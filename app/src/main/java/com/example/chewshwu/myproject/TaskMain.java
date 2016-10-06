@@ -1,119 +1,53 @@
 package com.example.chewshwu.myproject;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class MyProject extends AppCompatActivity {
+/**
+ * Created by CHEW SHWU on 10/5/2016.
+ */
+
+public class TaskMain extends AppCompatActivity {
 
     String json_string;
-    private TextView tvWelcome;
+    String projectID;
+    EditText projectIDEt;
+    Context ctx = this;
+    //  String projectName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_project);
+        setContentView(R.layout.activity_maintask);
 
-        Intent intent = getIntent();
-        String result = intent.getStringExtra("result");
-        tvWelcome = (TextView) findViewById(R.id.tvWelcome);
-        tvWelcome.setText(result);
-    }
-
-    public void getJSON(View view) {
-        new BackgroundTask().execute();
-    }
-
-    public void taskList(View view){
-      //  new BackgroundTask2().execute();
-        startActivity(new Intent(this, TaskMain.class));
+        projectIDEt = (EditText) findViewById(R.id.etProjID);
 
     }
-    /**
-     * public void parseJSON(View view){
-     * if(json_string == null) {
-     * Toast.makeText(getApplicationContext(), "First Get JSON", Toast.LENGTH_SHORT).show();
-     * }
-     * else {
-     * Intent intent = new Intent(MyProject.this, DisplayListView.class);
-     * intent.putExtra("json_data", json_string);
-     * startActivity(intent);
-     * }
-     * <p>
-     * <p>
-     * <p>
-     * <p>
-     * }
-     **/
 
-    public class BackgroundTask extends AsyncTask<Void, Void, String> {
+    public void ShowAllProject(View view) {
+        new BackgroundTask2().execute();
+    }
 
-        String project_url;
-        String JSON_STRING;
-
-        @Override
-        protected void onPreExecute() {
-            project_url = "http://192.168.137.1/project6/project.php";
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            try {
-                URL url = new URL(project_url);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                StringBuilder stringBuilder = new StringBuilder();
-
-                while ((JSON_STRING = bufferedReader.readLine()) != null) {
-                    stringBuilder.append(JSON_STRING + "\n");
-                }
-
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-                return stringBuilder.toString().trim();
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            // TextView textView = (TextView)findViewById(R.id.textview);
-            // textView.setText(result);
-            json_string = result;
-
-            if (json_string == null) {
-                Toast.makeText(getApplicationContext(), "No able to get data", Toast.LENGTH_SHORT).show();
-            } else {
-                Intent intent = new Intent(MyProject.this, DisplayListView.class);
-                intent.putExtra("json_data", json_string);
-                startActivity(intent);
-            }
-        }
+    public void ShowTask(View view){
+        projectID = projectIDEt.getText().toString();
+        BackgroundTask3 backgroundTask3 = new BackgroundTask3();
+        backgroundTask3.execute(projectID);
     }
 
 
@@ -166,7 +100,7 @@ public class MyProject extends AppCompatActivity {
             if (json_string == null) {
                 Toast.makeText(getApplicationContext(), "No able to get data", Toast.LENGTH_SHORT).show();
             } else {
-                Intent intent = new Intent(MyProject.this, TaskListView.class);
+                Intent intent = new Intent(TaskMain.this, TaskListView.class);
                 intent.putExtra("json_data", json_string);
                 startActivity(intent);
             }
@@ -175,5 +109,72 @@ public class MyProject extends AppCompatActivity {
 
     }
 
+    public class BackgroundTask3 extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+        String JSON_STRING;
+
+        @Override
+        protected String doInBackground(String... params) {
+            String projectID = params[0];
+            String register_url = "http://192.168.137.1/project6/taskdetail.php";
+
+            try {
+
+                URL url = new URL(register_url);
+                String urlParams = "projectID=" + projectID;
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(urlParams.getBytes());
+                outputStream.flush();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ((JSON_STRING = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(JSON_STRING + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return stringBuilder.toString().trim();
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "Exception: " + e.getMessage();
+            }
+
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            json_string = result;
+
+            if (json_string == null) {
+                Toast.makeText(getApplicationContext(), "No able to get data", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(TaskMain.this, TaskDetailList.class);
+                intent.putExtra("json_data", json_string);
+                startActivity(intent);
+            }
+        }
+        }
 
 }
+
+
+
+
+

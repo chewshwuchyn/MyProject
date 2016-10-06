@@ -52,7 +52,7 @@ public class TaskDetail extends AppCompatActivity{
         showTask();
 
         BackgroundWorker backgroundWorker = new BackgroundWorker();
-        backgroundWorker.execute(getString(projectID));
+        backgroundWorker.execute(Integer.toString(projectID));
 
     }
 
@@ -100,12 +100,10 @@ public class TaskDetail extends AppCompatActivity{
 
         }
 
-
         @Override
         protected void onPostExecute(String result) {
 
         }
-
 
     }
         public void showTask() {
@@ -113,9 +111,7 @@ public class TaskDetail extends AppCompatActivity{
             task.setText("Total Number of Task :" + Integer.toString(totalNoOfTask));
             pID.setText("Project ID :" + Integer.toString(projectID));
 
-
         }
-
 
     }
 
