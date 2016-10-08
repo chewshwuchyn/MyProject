@@ -8,14 +8,14 @@ public class Task2 {
 
     private String taskName, taskStartDate, taskEndDate;
     private int taskID;
-    private boolean checked = false;
+    private int checked;
 
-    public Task2(String taskName, String taskStartDate, String taskEndDate, int taskID) {
+    public Task2(String taskName, String taskStartDate, String taskEndDate, int taskID, int checked) {
         this.setTaskName(taskName);
         this.setTaskStartDate(taskStartDate);
         this.setTaskEndDate(taskEndDate);
         this.setTaskID(taskID);
-     //   this.checked = checked;
+        this.checked = checked;
 
     }
 
@@ -51,17 +51,17 @@ public class Task2 {
         this.taskID = taskID;
     }
 
-    public boolean isChecked(){
+    public int getChecked(){
         return checked;
     }
 
-    public void setChecked(boolean checked){
+    public void setChecked(int checked){
         this.checked = checked;
     }
 
-    public void toggleChecked(){
-        checked = !checked;
-    }
+  //  public void toggleChecked(){
+  //      checked = !checked;
+  //  }
 
 
 }

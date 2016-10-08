@@ -36,6 +36,7 @@ public class TaskMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maintask);
 
+
         projectIDEt = (EditText) findViewById(R.id.etProjID);
 
     }
@@ -167,6 +168,7 @@ public class TaskMain extends AppCompatActivity {
             } else {
                 Intent intent = new Intent(TaskMain.this, TaskDetailList.class);
                 intent.putExtra("json_data", json_string);
+                intent.putExtra("projectID", projectID);
                 startActivity(intent);
             }
         }
