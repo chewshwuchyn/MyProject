@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by CHEW SHWU on 10/7/2016.
@@ -56,6 +57,19 @@ public class Task2Adapter extends ArrayAdapter {
 
             row.setTag(task2Holder);
 
+            task2Holder.checkBox1.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v){
+                    CheckBox cb = (CheckBox) v;
+                    Task2 task2 = (Task2)cb.getTag();
+                    if(cb.isChecked()){
+                        task2.setChecked(1);
+                    }else{
+                        task2.setChecked(0);
+                    }
+
+                }
+            });
+
 
         } else {
             task2Holder = (Task2Holder) row.getTag();
@@ -89,14 +103,14 @@ public class Task2Adapter extends ArrayAdapter {
         TextView tvTaskStartDate;
         TextView tvTaskEndDate;
 
-   /**     public Task2Holder(){
+        public Task2Holder(){
 
         }
 
-        public Task2Holder(TextView tvPID, TextView tvPName, TextView tvTaskStartDate, TextView tvTaskEndDate, CheckBox checkBox1){
+        public Task2Holder(TextView tvTName, TextView tvTaskStartDate, TextView tvTaskEndDate, CheckBox checkBox1){
             this.checkBox1 = checkBox1;
-            this.tvPID = tvPID;
-            this.tvPName = tvPName;
+         //   this.tvPID = tvPID;
+            this.tvTName = tvTName;
             this.tvTaskStartDate = tvTaskStartDate;
             this.tvTaskEndDate = tvTaskEndDate;
         }
@@ -109,20 +123,13 @@ public class Task2Adapter extends ArrayAdapter {
             this.checkBox1 = checkBox1;
         }
 
-        public TextView getTvPID(){
-            return tvPID;
+
+        public TextView getTvTName(){
+            return tvTName;
         }
 
-        public void setTvPID(TextView tvPID){
-            this.tvPID = tvPID;
-        }
-
-        public TextView getTvPName(){
-            return tvPName;
-        }
-
-        public void setTvPName(TextView tvPName){
-            this.tvPName = tvPName;
+        public void setTvTName(TextView tvTName){
+            this.tvTName = tvTName;
         }
 
         public TextView getTvTaskStartDate(TextView tvTaskStartDate){
@@ -139,7 +146,7 @@ public class Task2Adapter extends ArrayAdapter {
 
         public void setTvTaskEndDate(TextView tvTaskEndDate){
             this.tvTaskEndDate = tvTaskEndDate;
-        }**/
+        }
 
 
     }

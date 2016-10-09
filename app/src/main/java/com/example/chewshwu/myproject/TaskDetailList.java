@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,11 +27,12 @@ import java.util.List;
  * Created by CHEW SHWU on 10/6/2016.
  */
 
-public class TaskDetailList extends AppCompatActivity {
+public class TaskDetailList extends AppCompatActivity{
     String json_string;
     JSONObject jsonObject;
     JSONArray jsonArray;
     Task2Adapter task2Adapter;
+    Task2Adapter.Task2Holder task2Holder;
     ListView listView;
     private TextView tvPName;
     int taskIDt, taskCompletet;
@@ -50,7 +52,7 @@ public class TaskDetailList extends AppCompatActivity {
 
         task2Adapter = new Task2Adapter(this, R.layout.row_layout3);
         listView.setAdapter(task2Adapter);
-     //   listView.setOnItemClickListener(onListClick);
+        listView.setOnItemClickListener(onListClick);
 
 
         json_string = getIntent().getExtras().getString("json_data");
@@ -82,6 +84,30 @@ public class TaskDetailList extends AppCompatActivity {
             e.printStackTrace();
         }
 
+   /**     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick( AdapterView<?> parent, View view,
+                                     int position, long id) {
+                Task2 task2 = (Task2)task2Adapter.getItem( position );
+                Task2Adapter.Task2Holder task2Holder = (Task2Adapter.Task2Holder) view.getTag();
+
+            //    task2Holder.getCheckBox1().setChecked(task2Holder.checkBox1.isChecked());
+            //    task2.setChecked(1);
+            //    task2Holder.getCheckBox1().setEnabled(false);
+            //    confirmUpdateTask();
+
+                if(task2Holder.getCheckBox1().isChecked()){
+                    task2.setChecked(1);
+                    taskIDt = task2.getTaskID();
+                    taskCompletet = task2.getChecked();
+                    confirmUpdateTask();
+                }
+
+
+            }
+        });**/
+
+
     }
 
     @Override
@@ -106,7 +132,7 @@ public class TaskDetailList extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-  /**  public void updateTask() {
+   public void updateTask() {
 
         class BackgroundTask extends AsyncTask<Void,Void,String> {
             //   ProgressDialog loading;
@@ -167,7 +193,7 @@ public class TaskDetailList extends AppCompatActivity {
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-    }**/
+    }
                         /**
                          * task2Holder.checkBox1.setOnClickListener(new View.OnClickListener(){
                          * public void onClick(View v){
@@ -184,7 +210,7 @@ public class TaskDetailList extends AppCompatActivity {
                          **/
 
 
-  /**  private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
+    private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
         List<Task2> list = new ArrayList();
 
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -192,11 +218,15 @@ public class TaskDetailList extends AppCompatActivity {
                 //   String value = (String)projectAdapter.getItem(position);
                 Task2 task2 = (Task2) task2Adapter.getItem(position);
                 Task2Adapter.Task2Holder task2Holder = (Task2Adapter.Task2Holder) view.getTag();
-                task2Holder.checkBox1.isChecked();
-                task2.setChecked(1);
-                taskIDt = task2.getTaskID();
-                taskCompletet = task2.getChecked();
-                confirmUpdateTask();
+                task2Holder.getCheckBox1().setChecked(task2Holder.checkBox1.isChecked());
+               if(task2Holder.checkBox1.isChecked()){
+                   task2.setChecked(1);
+                   taskIDt = task2.getTaskID();
+                   taskCompletet = task2.getChecked();
+                   confirmUpdateTask();
+               }
+
+
 
 
              //   Intent intent = new Intent(getApplicationContext(), TaskDetail.class);
@@ -218,7 +248,20 @@ public class TaskDetailList extends AppCompatActivity {
 
 
         }
-    };**/
+    };
+
+
+ /**   @Override
+    public void onClick(View v){
+        CheckBox cb = (CheckBox) v;
+        Task2 task2 = (Task2) cb.getTag();
+        if(v == task2Holder.getCheckBox1()){
+            cb.isChecked();
+            task2.setChecked(1);
+            confirmUpdateTask();
+        }
+
+    }**/
 
 
 }
