@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="ListTitle">#2b0754</color>
+    <color name="TitleTextView">#340b5d</color>
 </resources>
