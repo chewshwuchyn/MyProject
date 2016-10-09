@@ -32,7 +32,7 @@ public class CreateProject extends AppCompatActivity {
     Button bCreate;
     String name, type;
     String startDate, finishDate;
-//    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    //    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     String noOfMilestone, curMilestone;
     Context ctx = this;
 
@@ -60,15 +60,20 @@ public class CreateProject extends AppCompatActivity {
         type = etType.getText().toString();
         //  startDate = new setDate(etStartDate, this);
         //  finishDate = new setDate(etFinishDate, this);
-         startDate = etStartDate.getText().toString();
+        startDate = etStartDate.getText().toString();
         finishDate = etFinishDate.getText().toString();
         noOfMilestone = etNoOfMilestone.getText().toString();
         curMilestone = etCurMilestone.getText().toString();
-        BackgroundWorker backgroundWorker = new BackgroundWorker();
-        backgroundWorker.execute(name, type, startDate, finishDate, noOfMilestone, curMilestone);
+        if (name.equals("") || startDate.equals("") || finishDate.equals("")) {
+            Toast.makeText(CreateProject.this, "Please fill in required fields.", Toast.LENGTH_LONG).show();
+        } else {
 
-    //    noOfMilestone = Integer.parseInt(etNoOfMilestone.getText().toString());
-    //    curMilestone = Integer.parseInt(etCurMilestone.getText().toString());
+
+            BackgroundWorker backgroundWorker = new BackgroundWorker();
+            backgroundWorker.execute(name, type, startDate, finishDate, noOfMilestone, curMilestone);
+        }
+        //    noOfMilestone = Integer.parseInt(etNoOfMilestone.getText().toString());
+        //    curMilestone = Integer.parseInt(etCurMilestone.getText().toString());
     }
 
     public void onStart() {
@@ -99,8 +104,6 @@ public class CreateProject extends AppCompatActivity {
         });
 
 
-
-
     }
 
     public class BackgroundWorker extends AsyncTask<String, String, String> {
@@ -111,19 +114,19 @@ public class CreateProject extends AppCompatActivity {
             String type = params[1];
             String startDate = params[2];
             String finishDate = params[3];
-            String noOfMilestone= params[4];
-            String curMilestone= params[5];
+            String noOfMilestone = params[4];
+            String curMilestone = params[5];
 
-            String result="";
+            String result = "";
             int line;
             String register_url = "http://192.168.137.1/project6/createproject.php";
 
-            try{
+            try {
 
                 URL url = new URL(register_url);
-                String urlParams = "name=" + name + "&type=" + type + "&startDate=" + startDate + "&finishDate=" + finishDate + "&noOfMilestone=" + noOfMilestone + "&curMilestone=" + curMilestone ;
+                String urlParams = "name=" + name + "&type=" + type + "&startDate=" + startDate + "&finishDate=" + finishDate + "&noOfMilestone=" + noOfMilestone + "&curMilestone=" + curMilestone;
 
-                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setDoOutput(true);
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 outputStream.write(urlParams.getBytes());
@@ -132,9 +135,8 @@ public class CreateProject extends AppCompatActivity {
                 InputStream inputStream = httpURLConnection.getInputStream();
 
 
-
-                while((line = inputStream.read())!= -1) {
-                    result += (char)line;
+                while ((line = inputStream.read()) != -1) {
+                    result += (char) line;
                 }
                 inputStream.close();
                 httpURLConnection.disconnect();
@@ -154,13 +156,13 @@ public class CreateProject extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            if(result.equals("")) {
+            if (result.equals("")) {
                 result = "New project added.";
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);
-              //  Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-             //   RegisterActivity.this.startActivity(intent);
+                //  Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                //   RegisterActivity.this.startActivity(intent);
             }
             Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
         }

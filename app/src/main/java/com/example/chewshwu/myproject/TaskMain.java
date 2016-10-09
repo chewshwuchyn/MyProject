@@ -51,6 +51,14 @@ public class TaskMain extends AppCompatActivity {
         backgroundTask3.execute(projectID);
     }
 
+    public void CreateNewTask(View view){
+        Intent intent = new Intent(TaskMain.this, CreateTask.class);
+        projectID = projectIDEt.getText().toString();
+        intent.putExtra("projectID", projectID);
+        startActivity(intent);
+
+    }
+
 
     public class BackgroundTask2 extends AsyncTask<Void, Void, String> {
         String project_url;

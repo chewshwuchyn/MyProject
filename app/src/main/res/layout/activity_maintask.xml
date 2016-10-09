@@ -43,7 +43,8 @@
         android:text="Create New Task"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bCreateTask" />
+        android:id="@+id/bCreateTask"
+        android:onClick="CreateNewTask"/>
 
     <Button
         android:text="Show All Project"
