@@ -26,6 +26,7 @@
         <activity android:name=".TaskMain"/>
         <activity android:name=".TaskDetailList"/>
         <activity android:name=".TaskDetail"/>
+        <activity android:name=".ToDoList"/>
         <activity android:name=".CreateTask"> </activity>
 
     </application>
