@@ -35,16 +35,11 @@
 
 
         <Button
-            android:text="Show All To-Dos "
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/bShowAllDo" />
-
-        <Button
             android:text="Completed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/bDoComplete" />
+            android:id="@+id/bDoComplete"
+            android:onClick="DoItemCompleted"/>
 
         <ListView
             android:layout_width="match_parent"

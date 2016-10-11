@@ -29,6 +29,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -36,7 +37,7 @@ import java.util.List;
  */
 
 public class ToDoList extends AppCompatActivity {
-    Button bAddDo, bShowAllDo, bDoComplete;
+    Button bAddDo, bDoComplete;
     private EditText etDoName;
     String json_string;
     JSONObject jsonObject;
@@ -44,6 +45,7 @@ public class ToDoList extends AppCompatActivity {
     DoAdapter doAdapter;
     ListView listView;
     Context ctx = this;
+    int doIDt, doCompletet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,6 @@ public class ToDoList extends AppCompatActivity {
         setContentView(R.layout.activity_todolist);
 
         bAddDo = (Button)findViewById(R.id.bAddDo);
-        bShowAllDo = (Button)findViewById(R.id.bShowAllDo);
         bDoComplete = (Button)findViewById(R.id.bDoComplete);
         etDoName = (EditText)findViewById(R.id.etDoName);
 
@@ -60,10 +61,18 @@ public class ToDoList extends AppCompatActivity {
         listView.setAdapter(doAdapter);
      //   listView.setOnItemClickListener(onListClick);
 
+
         bAddDo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 AddDoItem();;
+            }
+        });
+
+        bDoComplete.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                DoItemCompleted();;
             }
         });
 
@@ -96,6 +105,8 @@ public class ToDoList extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
+
     }
 
     public void AddDoItem(){
@@ -124,8 +135,68 @@ public class ToDoList extends AppCompatActivity {
         }
     }
 
+    public void DoItemCompleted(){
+        if(doAdapter.getCount()>0){
+            for(int i=0; i<doAdapter.getCount(); i++){
+                DoItem doItem = (DoItem) doAdapter.getItem(i);
+                if(i> doAdapter.getCount()){
+                    break;
+                }if(((DoItem) doAdapter.getItem(i)).isChecked()){
+                    doItem.setDoComplete(1);
+                    doIDt = doItem.getDoID();
+                    doCompletet = doItem.getDoComplete();
+                    updateDoItem();
+                    BackgroundTask2 backgroundTask2 = new BackgroundTask2();
+                    backgroundTask2.execute();
+                    doAdapter.notifyDataSetChanged();
+                    continue;
+                }
 
-    public class BackgroundWorker extends AsyncTask<String, String, String> {
+
+            }
+        }
+    }
+
+    public void updateDoItem() {
+
+        class BackgroundTask extends AsyncTask<Void,Void,String> {
+            //   ProgressDialog loading;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                //   loading = ProgressDialog.show(ViewEmployee.this,"Updating...","Wait...",false,false);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                finish();
+                //   loading.dismiss();
+                Toast.makeText(ToDoList.this,s,Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                HashMap<String,String> hashMap = new HashMap<>();
+                hashMap.put("doID",String.valueOf(doIDt));
+                hashMap.put("doComplete",String.valueOf(doCompletet));
+
+                RequestHandler requestHandler = new RequestHandler();
+
+                String s = requestHandler.sendPostRequest("http://192.168.137.1/project6/updatedocomplete.php",hashMap);
+
+                return s;
+            }
+        }
+
+        BackgroundTask task = new BackgroundTask();
+        task.execute();
+    }
+
+
+
+        public class BackgroundWorker extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... params) {

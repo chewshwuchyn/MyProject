@@ -43,7 +43,8 @@ public class MyProject extends AppCompatActivity {
     }
 
     public void toDoList(View view){
-        //  new BackgroundTask2().execute();
+      //  startActivity(new Intent(this, ToDoList.class));
+
         new BackgroundTask2().execute();
     }
     /**
