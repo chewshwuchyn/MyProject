@@ -180,6 +180,10 @@ public class TaskDetailList extends AppCompatActivity{
                     public void onClick(DialogInterface arg0, int arg1) {
                         updateTask();
                    //     startActivity(new Intent(Detail.this,MyProject.class));
+                        Intent intent = new Intent(TaskDetailList.this, TaskMain.class);
+                        finish();;
+                        startActivity(intent);
+
                     }
                 });
 
@@ -229,7 +233,9 @@ public class TaskDetailList extends AppCompatActivity{
 
 
 
-             //   Intent intent = new Intent(getApplicationContext(), TaskDetail.class);
+
+
+                //   Intent intent = new Intent(getApplicationContext(), TaskDetail.class);
                 //  intent.putExtra("json_data", String.valueOf(position));
             //    intent.putExtra("projectID", task.getProjectID());
            //     intent.putExtra("projectName", task.getProjectName());

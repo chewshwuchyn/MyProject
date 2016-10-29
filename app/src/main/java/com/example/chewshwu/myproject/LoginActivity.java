@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -56,6 +57,9 @@ import java.net.URLEncoder;
 public class LoginActivity extends AppCompatActivity {
     EditText EmailEt, PasswordEt;
     String email, password;
+    private SharedPreferences preferences;
+    static final String PREF_NAME = "PrefKey";
+    public static final String KEY_USERID = "user_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
 
         EmailEt = (EditText)findViewById(R.id.etEmail);
         PasswordEt = (EditText) findViewById(R.id.etPassword);
+        preferences = getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE);
 
 
     }
@@ -153,6 +158,10 @@ public class LoginActivity extends AppCompatActivity {
                 //     alertDialog.show();
 
             }else{
+
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("user_id", result);
+                editor.commit();
                 //    alertDialog.setMessage(result);
                 //    alertDialog.show();
                 Intent intent = new Intent(LoginActivity.this, MyProject.class);
@@ -160,9 +169,10 @@ public class LoginActivity extends AppCompatActivity {
               //  intent.putExtra("email", email);
                // intent.putExtra("password", password);
                 LoginActivity.this.startActivity(intent);
+                finish();
 
             }
-            Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Login success!!! Welcome " + result + ":)", Toast.LENGTH_SHORT).show();
 
             //   Intent intent = new Intent(LoginActivity.this, MyProject.class);
             //   intent.putExtra("email", email);

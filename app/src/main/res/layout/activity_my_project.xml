@@ -9,53 +9,50 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.chewshwu.myproject.MyProject">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/tvWelcome"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
 
     <Button
-        android:text="Task"
+        android:text="Loyout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/b1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/b2"
+        android:id="@+id/b4"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         style="@style/Base.TextAppearance.AppCompat.Body1"
-        android:onClick="taskList" />
+        android:onClick="Loyout" />
+
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="My Project"
         android:id="@+id/b1"
         android:onClick="getJSON"
-        android:layout_marginTop="56dp"
-        android:layout_below="@+id/tvWelcome"
+        android:layout_marginTop="124dp"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:layout_below="@+id/b4"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        style="@style/Base.TextAppearance.AppCompat.Body1" />
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/b2"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:onClick="taskList"
+        android:layout_below="@+id/b1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:text="To Do List"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/b2"
         android:id="@+id/b3"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         style="@style/Base.TextAppearance.AppCompat.Body1"
-        android:onClick="toDoList"/>
+        android:onClick="toDoList"
+        android:layout_below="@+id/b2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

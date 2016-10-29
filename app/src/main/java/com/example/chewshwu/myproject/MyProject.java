@@ -1,6 +1,8 @@
 package com.example.chewshwu.myproject;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,18 +20,20 @@ import java.net.URL;
 
 public class MyProject extends AppCompatActivity {
 
+
     String json_string;
-    private TextView tvWelcome;
+ //   private TextView tvWelcome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_project);
 
-        Intent intent = getIntent();
-        String result = intent.getStringExtra("result");
-        tvWelcome = (TextView) findViewById(R.id.tvWelcome);
-        tvWelcome.setText(result);
+
+//        Intent intent = getIntent();
+ //       String result = intent.getStringExtra("result");
+ //      tvWelcome = (TextView) findViewById(R.id.tvWelcome);
+  //      tvWelcome.setText("Welcome " +);
     }
 
     public void getJSON(View view) {
@@ -40,6 +44,18 @@ public class MyProject extends AppCompatActivity {
       //  new BackgroundTask2().execute();
         startActivity(new Intent(this, TaskMain.class));
 
+    }
+
+    public void Loyout (View view){
+        SharedPreferences sharedPreferences = getSharedPreferences(LoginActivity.PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
+
+        Intent intent = new Intent (MyProject.this, LoginActivity.class);
+
+        MyProject.this.startActivity(intent);
+        finish();
     }
 
     public void toDoList(View view){
