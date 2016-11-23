@@ -7,8 +7,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,6 +23,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by CHEW SHWU on 10/5/2016.
@@ -26,9 +33,15 @@ import java.net.URL;
 public class TaskMain extends AppCompatActivity {
 
     String json_string;
-    String projectID;
-    EditText projectIDEt;
+    String sprojectString, sprojectID, sprojectName;
+    //   EditText projectIDEt;
     Context ctx = this;
+    String text;
+    spinnerObjProj sop = new spinnerObjProj();
+
+    ArrayList<HashMap<String, String>> spinnerobjpro = new ArrayList<HashMap<String, String>>();
+
+    final static String urlAddress = "http://192.168.137.1/project6/getprojectlist.php";
     //  String projectName;
 
     @Override
@@ -36,25 +49,56 @@ public class TaskMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maintask);
 
+        Spinner sp = (Spinner) findViewById(R.id.spinner);
 
-        projectIDEt = (EditText) findViewById(R.id.etProjID);
 
+
+
+
+        sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            ArrayList<HashMap<String, String>> spinnerobjpro = new ArrayList<HashMap<String, String>>();
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View selectedItemView, int position, long id) {
+                sprojectString = parent.getSelectedItem().toString();
+
+
+                sprojectString = sprojectString.substring(1, sprojectString.length() - 1);
+                String[] choppedSprojectString = sprojectString.split("=");
+                sprojectString = choppedSprojectString[2];
+                sprojectName = choppedSprojectString[1];
+
+
+                //      sprojectID = parent.getItemAtPosition(position).get("projectName").toString;
+                //     sprojectName = spinnerobjpro.get(position).get("projectName").toString();
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //    projectIDEt = (EditText) findViewById(R.id.etProjID);
+        new spinnerDownloader(TaskMain.this, urlAddress, sp).execute();
     }
 
     public void ShowAllProject(View view) {
         new BackgroundTask2().execute();
     }
 
-    public void ShowTask(View view){
-        projectID = projectIDEt.getText().toString();
+    public void ShowTask(View view) {
+        //  projectID = projectIDEt.getText().toString();
         BackgroundTask3 backgroundTask3 = new BackgroundTask3();
-        backgroundTask3.execute(projectID);
+        backgroundTask3.execute(sprojectString);
     }
 
-    public void CreateNewTask(View view){
+    public void CreateNewTask(View view) {
         Intent intent = new Intent(TaskMain.this, CreateTask.class);
-        projectID = projectIDEt.getText().toString();
-        intent.putExtra("projectID", projectID);
+        //   projectID = projectIDEt.getText().toString();
+        intent.putExtra("projectID", sprojectString);
         startActivity(intent);
 
     }
@@ -176,11 +220,11 @@ public class TaskMain extends AppCompatActivity {
             } else {
                 Intent intent = new Intent(TaskMain.this, TaskDetailList.class);
                 intent.putExtra("json_data", json_string);
-                intent.putExtra("projectID", projectID);
+                intent.putExtra("projectID", sprojectString);
                 startActivity(intent);
             }
         }
-        }
+    }
 
 }
 
