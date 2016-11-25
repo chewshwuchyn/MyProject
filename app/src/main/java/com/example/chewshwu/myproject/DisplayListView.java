@@ -2,6 +2,7 @@ package com.example.chewshwu.myproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,6 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DisplayListView extends AppCompatActivity {
+
+    private SharedPreferences preferences;
+    public static final String PREF_NAME = "PrefKey";
+    public static final String KEY_USERID = "user_id";
+
+    private String userID = "";
+
     String json_string;
     JSONObject jsonObject;
     JSONArray jsonArray;
@@ -33,6 +41,9 @@ public class DisplayListView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_list_view);
+
+        preferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        userID = preferences.getString("user_id", "0");
 
         listView = (ListView) findViewById(R.id.view);
 

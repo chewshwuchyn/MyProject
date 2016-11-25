@@ -11,16 +11,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class MyProject extends AppCompatActivity {
 
-
+    private SharedPreferences preferences;
+    public static final String PREF_NAME = "PrefKey";
+    public static final String KEY_USERID = "user_id";
     String json_string;
  //   private TextView tvWelcome;
 
@@ -37,7 +43,7 @@ public class MyProject extends AppCompatActivity {
     }
 
     public void getJSON(View view) {
-        new BackgroundTask().execute();
+        new BackgroundTask(this).execute();
     }
 
     public void taskList(View view){
@@ -46,7 +52,7 @@ public class MyProject extends AppCompatActivity {
 
     }
 
-    public void Loyout (View view){
+    public void Logout (View view){
         SharedPreferences sharedPreferences = getSharedPreferences(LoginActivity.PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
@@ -61,7 +67,7 @@ public class MyProject extends AppCompatActivity {
     public void toDoList(View view){
       //  startActivity(new Intent(this, ToDoList.class));
 
-        new BackgroundTask2().execute();
+        new BackgroundTask2(this).execute();
     }
     /**
      * public void parseJSON(View view){
@@ -82,19 +88,43 @@ public class MyProject extends AppCompatActivity {
 
     public class BackgroundTask extends AsyncTask<Void, Void, String> {
 
+        Context context;
         String project_url;
         String JSON_STRING;
 
+        BackgroundTask (Context ctx) {
+            context = ctx;
+        }
+
         @Override
         protected void onPreExecute() {
-            project_url = "http://192.168.137.1/project6/project.php";
+            super.onPreExecute();;
+
         }
 
         @Override
         protected String doInBackground(Void... params) {
+
+            project_url = "http://192.168.137.1/project6/project.php";
+            SharedPreferences preference = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            String userID = preference.getString("user_id", "0");
+
+
             try {
                 URL url = new URL(project_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("user_id", "UTF-8")+"="+URLEncoder.encode(userID,"UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 StringBuilder stringBuilder = new StringBuilder();
@@ -141,19 +171,41 @@ public class MyProject extends AppCompatActivity {
 
     public class BackgroundTask2 extends AsyncTask<Void, Void, String> {
 
+        Context context;
         String project_url;
         String JSON_STRING;
 
+        BackgroundTask2 (Context ctx) {
+            context = ctx;
+        }
+
         @Override
         protected void onPreExecute() {
-            project_url = "http://192.168.137.1/project6/todolist.php";
+            super.onPreExecute();;
         }
 
         @Override
         protected String doInBackground(Void... params) {
+
+            SharedPreferences preference = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            String userID = preference.getString("user_id", "0");
+            project_url = "http://192.168.137.1/project6/todolist.php";
+
             try {
                 URL url = new URL(project_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("user_id", "UTF-8")+"="+URLEncoder.encode(userID,"UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 StringBuilder stringBuilder = new StringBuilder();

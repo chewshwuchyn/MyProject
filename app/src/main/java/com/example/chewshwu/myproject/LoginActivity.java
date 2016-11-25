@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public class BackgroundWorker extends AsyncTask<String, Void, String> {
         Context context;
-        ProgressDialog progressDialog;
+        ProgressDialog pd;
         AlertDialog alertDialog;
         BackgroundWorker (Context ctx) {
             context = ctx;
@@ -143,6 +143,11 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();;
+
+            pd= new ProgressDialog(context);
+            pd.setTitle("Login status");
+            pd.setMessage("Loading...Please wait");
+            pd.show();
             //   progressDialog = ProgressDialog.show(LoginActivity.this, "Loading...", null, true, true);
             //    alertDialog = new AlertDialog.Builder(context).create();
             //    alertDialog.setTitle("Login Status");
@@ -152,8 +157,12 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            pd.dismiss();
+
             if(result.equals("")) {
                 result = "Login not success.";
+                Toast.makeText(context, result,Toast.LENGTH_SHORT).show();
+
                 //    alertDialog.setMessage(result);
                 //     alertDialog.show();
 
@@ -162,6 +171,7 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("user_id", result);
                 editor.commit();
+                Toast.makeText(context, "Login success!!! Welcome", Toast.LENGTH_SHORT).show();
                 //    alertDialog.setMessage(result);
                 //    alertDialog.show();
                 Intent intent = new Intent(LoginActivity.this, MyProject.class);
@@ -172,7 +182,7 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
 
             }
-            Toast.makeText(context, "Login success!!! Welcome " + result + ":)", Toast.LENGTH_SHORT).show();
+
 
             //   Intent intent = new Intent(LoginActivity.this, MyProject.class);
             //   intent.putExtra("email", email);
