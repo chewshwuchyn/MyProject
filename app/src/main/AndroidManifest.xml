@@ -41,6 +41,7 @@
         <activity android:name=".TaskDetail"/>
         <activity android:name=".ToDoList"/>
         <activity android:name=".MemberNoList"/>
+        <activity android:name=".ProjectMemberList"/>
         <activity android:name=".CreateTask"> </activity>
 
     </application>

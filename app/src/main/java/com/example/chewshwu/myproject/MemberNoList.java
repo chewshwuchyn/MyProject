@@ -147,7 +147,7 @@ public class MemberNoList extends AppCompatActivity {
             if (list != null) {
                 //   String value = (String)projectAdapter.getItem(position);
                 MemberNo memberNo = (MemberNo) memberNoAdapter.getItem(position);
-                Intent intent = new Intent(getApplicationContext(), ProjectMembers.class);
+                Intent intent = new Intent(getApplicationContext(), ProjectMemberList.class);
                 //intent.putExtra("json_data", String.valueOf(position));
                 intent.putExtra("projectID", memberNo.getProjectID());
                 intent.putExtra("projectName", memberNo.getProjectName());

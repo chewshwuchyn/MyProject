@@ -5,4 +5,59 @@ package com.example.chewshwu.myproject;
  */
 
 public class ProjectMembers {
+
+    private int user_id;
+    private String name;
+    private String email;
+    private String position;
+    private String imageurl;
+
+
+    public ProjectMembers(int user_id, String name, String email, String position, String imageurl) {
+        this.user_id = user_id;
+        this.name = name;
+        this.email = email;
+        this.position = position;
+        this.imageurl = imageurl;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getImageurl() {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
+    }
 }
