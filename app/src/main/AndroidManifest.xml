@@ -40,6 +40,7 @@
         <activity android:name=".TaskDetailList"/>
         <activity android:name=".TaskDetail"/>
         <activity android:name=".ToDoList"/>
+        <activity android:name=".MemberNoList"/>
         <activity android:name=".CreateTask"> </activity>
 
     </application>

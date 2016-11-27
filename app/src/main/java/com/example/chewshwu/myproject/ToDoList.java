@@ -3,6 +3,7 @@ package com.example.chewshwu.myproject;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -21,13 +22,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +41,10 @@ import java.util.List;
  */
 
 public class ToDoList extends AppCompatActivity {
+
+    private SharedPreferences preferences;
+    public static final String PREF_NAME = "PrefKey";
+    public static final String KEY_USERID = "user_id";
     Button bAddDo, bDoComplete;
     private EditText etDoName;
     String json_string;
@@ -123,10 +131,12 @@ public class ToDoList extends AppCompatActivity {
 
             builder.create().show();
         }else{
+            SharedPreferences preference = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            String userID = preference.getString("user_id", "0");
             String doName = etDoName.getText().toString();
             BackgroundWorker backgroundWorker = new BackgroundWorker();
-            backgroundWorker.execute(doName);
-            BackgroundTask2 backgroundTask2 = new BackgroundTask2();
+            backgroundWorker.execute(doName, userID);
+            BackgroundTask2 backgroundTask2 = new BackgroundTask2(this);
             backgroundTask2.execute();
             doAdapter.notifyDataSetChanged();
             etDoName.setText("");
@@ -141,12 +151,13 @@ public class ToDoList extends AppCompatActivity {
                 DoItem doItem = (DoItem) doAdapter.getItem(i);
                 if(i> doAdapter.getCount()){
                     break;
-                }if(((DoItem) doAdapter.getItem(i)).isChecked()){
+                }
+                if(((DoItem) doAdapter.getItem(i)).isChecked()){
                     doItem.setDoComplete(1);
                     doIDt = doItem.getDoID();
                     doCompletet = doItem.getDoComplete();
                     updateDoItem();
-                    BackgroundTask2 backgroundTask2 = new BackgroundTask2();
+                    BackgroundTask2 backgroundTask2 = new BackgroundTask2(this);
                     backgroundTask2.execute();
                     doAdapter.notifyDataSetChanged();
                     continue;
@@ -178,9 +189,13 @@ public class ToDoList extends AppCompatActivity {
 
             @Override
             protected String doInBackground(Void... params) {
+                SharedPreferences preference = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                String userID = preference.getString("user_id", "0");
+
                 HashMap<String,String> hashMap = new HashMap<>();
                 hashMap.put("doID",String.valueOf(doIDt));
                 hashMap.put("doComplete",String.valueOf(doCompletet));
+                hashMap.put("user_id",String.valueOf(userID));
 
                 RequestHandler requestHandler = new RequestHandler();
 
@@ -202,6 +217,7 @@ public class ToDoList extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
             String doName = params[0];
+            String userID = params[1];
 
             String result = "";
             int line;
@@ -209,7 +225,7 @@ public class ToDoList extends AppCompatActivity {
 
             try {
                 URL url = new URL(register_url);
-                String urlParams = "doName=" + doName;
+                String urlParams = "doName=" + doName + "&user_id=" + userID;
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setDoOutput(true);
                 OutputStream outputStream = httpURLConnection.getOutputStream();
@@ -279,19 +295,42 @@ public class ToDoList extends AppCompatActivity {
 
     public class BackgroundTask2 extends AsyncTask<Void, Void, String> {
 
+        Context context;
         String project_url;
         String JSON_STRING;
 
+        BackgroundTask2 (Context ctx) {
+            context = ctx;
+        }
+
         @Override
         protected void onPreExecute() {
-            project_url = "http://192.168.137.1/project6/todolist.php";
+            super.onPreExecute();;
         }
 
         @Override
         protected String doInBackground(Void... params) {
+
+            SharedPreferences preference = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            String userID = preference.getString("user_id", "0");
+            project_url = "http://192.168.137.1/project6/todolist.php";
+
+
             try {
                 URL url = new URL(project_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("user_id", "UTF-8")+"="+URLEncoder.encode(userID,"UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 StringBuilder stringBuilder = new StringBuilder();

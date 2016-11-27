@@ -124,10 +124,13 @@ public class Detail extends AppCompatActivity implements View.OnClickListener {
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
              //   loading.dismiss();
-                Toast.makeText(Detail.this,s,Toast.LENGTH_LONG).show();
+
 
                 Intent intent = new Intent(getApplicationContext(), MyProject.class);
+                finish();
                 startActivity(intent);
+
+                Toast.makeText(Detail.this,s,Toast.LENGTH_LONG).show();
 
 
             }

@@ -41,10 +41,12 @@ public class TaskMain extends AppCompatActivity {
     public static final String KEY_USERID = "user_id";
     String json_string;
     String sprojectString, sprojectID, sprojectName;
+    int projectIDS;
     //   EditText projectIDEt;
     Context ctx = this;
     String text;
-    spinnerObjProj sop = new spinnerObjProj();
+    ArrayList<spinnerObjProj> proObj;
+ //   spinnerObjProj sop = new spinnerObjProj();
 
     ArrayList<HashMap<String, String>> spinnerobjpro = new ArrayList<HashMap<String, String>>();
 
@@ -76,6 +78,7 @@ public class TaskMain extends AppCompatActivity {
                 sprojectName = choppedSprojectString[1];
 
 
+
                 //      sprojectID = parent.getItemAtPosition(position).get("projectName").toString;
                 //     sprojectName = spinnerobjpro.get(position).get("projectName").toString();
 
@@ -98,8 +101,10 @@ public class TaskMain extends AppCompatActivity {
 
     public void ShowTask(View view) {
         //  projectID = projectIDEt.getText().toString();
+        SharedPreferences preference = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        String userID = preference.getString("user_id", "0");
         BackgroundTask3 backgroundTask3 = new BackgroundTask3();
-        backgroundTask3.execute(sprojectString);
+        backgroundTask3.execute(sprojectString, userID);
     }
 
     public void CreateNewTask(View view) {
@@ -198,12 +203,13 @@ public class TaskMain extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String projectID = params[0];
+            String userID = params[1];
             String register_url = "http://192.168.137.1/project6/taskdetail.php";
 
             try {
 
                 URL url = new URL(register_url);
-                String urlParams = "projectID=" + projectID;
+                String urlParams = "projectID=" + projectID + "&user_id=" + userID;
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);

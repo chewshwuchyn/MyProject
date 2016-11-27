@@ -50,7 +50,14 @@ public class MyProject extends AppCompatActivity {
       //  new BackgroundTask2().execute();
         startActivity(new Intent(this, TaskMain.class));
 
+
     }
+
+    public void projectMember(View view){
+        startActivity(new Intent(this, MemberNoList.class));
+
+    }
+
 
     public void Logout (View view){
         SharedPreferences sharedPreferences = getSharedPreferences(LoginActivity.PREF_NAME, Context.MODE_PRIVATE);
@@ -247,6 +254,7 @@ public class MyProject extends AppCompatActivity {
             }
         }
     }
+
 
 
 
