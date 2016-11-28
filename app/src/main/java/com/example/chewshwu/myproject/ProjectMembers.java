@@ -11,14 +11,17 @@ public class ProjectMembers {
     private String email;
     private String position;
     private String imageurl;
+    private int assignID;
 
 
-    public ProjectMembers(int user_id, String name, String email, String position, String imageurl) {
+
+    public ProjectMembers(int user_id, String name, String email, String position, String imageurl, int assignID) {
         this.user_id = user_id;
         this.name = name;
         this.email = email;
         this.position = position;
         this.imageurl = imageurl;
+        this.assignID = assignID;
     }
 
     public int getUser_id() {
@@ -59,5 +62,13 @@ public class ProjectMembers {
 
     public void setImageurl(String imageurl) {
         this.imageurl = imageurl;
+    }
+
+    public int getAssignID() {
+        return assignID;
+    }
+
+    public void setAssignID(int assignID) {
+        this.assignID = assignID;
     }
 }

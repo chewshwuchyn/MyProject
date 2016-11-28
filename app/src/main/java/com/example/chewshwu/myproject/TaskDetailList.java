@@ -54,7 +54,6 @@ public class TaskDetailList extends AppCompatActivity{
         listView.setAdapter(task2Adapter);
         listView.setOnItemClickListener(onListClick);
 
-
         json_string = getIntent().getExtras().getString("json_data");
 
         try {
@@ -83,6 +82,8 @@ public class TaskDetailList extends AppCompatActivity{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
 
    /**     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -212,6 +213,7 @@ public class TaskDetailList extends AppCompatActivity{
                          * }
                          * });
                          **/
+
 
 
     private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
