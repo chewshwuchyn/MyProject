@@ -51,6 +51,10 @@ public class MemberNoList extends AppCompatActivity {
 
         listView.setOnItemClickListener(onListClick);
 
+  //      Intent intent = getIntent();
+  //      finish();
+//        startActivity(intent);
+
     }
 
     private class GetMemberNum extends AsyncTask<Void, Void, Void> {

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -45,6 +46,9 @@ import okhttp3.Response;
 public class ProjectMemberList extends AppCompatActivity {
     private SharedPreferences preferences;
     public static final String PREF_NAME = "PrefKey";
+    public static final String KEY_USERID = "user_id";
+    private String userID = "";
+
     private RecyclerView recyclerView;
     private GridLayoutManager gridLayoutManager;
     private ProjectMemberAdapter adapter;
@@ -54,6 +58,7 @@ public class ProjectMemberList extends AppCompatActivity {
     String name, email, position, imageurl;
     int user_id, assignID;
     int imagePosition = 0;
+    FloatingActionButton fab;
 
 
 
@@ -62,13 +67,28 @@ public class ProjectMemberList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projectmembers);
 
+        preferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        userID = preferences.getString("user_id", "0");
+
         Bundle bundle = getIntent().getExtras();
         projectID = String.valueOf(bundle.getInt("projectID"));
 
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("projectID", projectID);
+        editor.commit();
+
+
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         projectMembersList = new ArrayList<>();
-        //  load_data_from_server(bundle.getInt("projectID"));
-        //    load_data_from_server(0);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        fab.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(ProjectMemberList.this, AddProjectMember.class));
+            }
+        });
 
         gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
