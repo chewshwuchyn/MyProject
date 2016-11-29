@@ -33,19 +33,23 @@ public class AddProjectMember extends AppCompatActivity {
     private String userID = "";
     private String projectID = "";
 
+
+
     String json_string;
-    String sprojectString, sprojectName;
+    String sprojectString, sprojectName, sname;
 
     ArrayList<spinnerObjProj> proObj;
     //   spinnerObjProj sop = new spinnerObjProj();
 
     ArrayList<HashMap<String, String>> spinnerobjpro = new ArrayList<HashMap<String, String>>();
 
-    final static String urlAddress = "http://192.168.137.1/project6/getprojectlist.php";
+    String urlAddress = "http://192.168.137.1/project6/getprojectlist.php";
+    //String urlAddress2 = "http://192.168.137.1/project6/getuser.php";
     //  String projectName;
 
     EditText etProjectID, etUserID, etPosition;
     Button bAdd;
+    Spinner sp, sp2;
     String sprojectID, suserID, sposition;
 
     Context ctx = this;
@@ -60,36 +64,62 @@ public class AddProjectMember extends AppCompatActivity {
         userID = preferences.getString("user_id", "0");
         projectID = preferences.getString("projectID", "");
 
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("projectID2", "");
+        editor.commit();
+
         bAdd = (Button) findViewById(R.id.bAdd);
-    //    etProjectID = (EditText) findViewById(R.id.etProjectID);
-        etUserID = (EditText) findViewById(R.id.etUserID);
+        //    etProjectID = (EditText) findViewById(R.id.etProjectID);
+        //     etUserID = (EditText) findViewById(R.id.etUserID);
         etPosition = (EditText) findViewById(R.id.etPosition);
 
 
+        sp = (Spinner) findViewById(R.id.spinner2);
+        //sp2 = (Spinner) findViewById(R.id.spinner3);
 
-        Spinner sp = (Spinner) findViewById(R.id.spinner2);
-
-
-
-
-
+        new spinnerDownloader(AddProjectMember.this, urlAddress, sp).execute();
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            ArrayList<HashMap<String, String>> spinnerobjpro = new ArrayList<HashMap<String, String>>();
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View selectedItemView, int position, long id) {
                 sprojectString = parent.getSelectedItem().toString();
-
 
                 sprojectString = sprojectString.substring(1, sprojectString.length() - 1);
                 String[] choppedSprojectString = sprojectString.split("=");
                 sprojectString = choppedSprojectString[2];
                 sprojectName = choppedSprojectString[1];
 
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("projectID2", sprojectString);
+                        editor.commit();
+
+                getUser(sprojectString);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
-                //      sprojectID = parent.getItemAtPosition(position).get("projectName").toString;
-                //     sprojectName = spinnerobjpro.get(position).get("projectName").toString();
+    }
+
+
+    public void getUser(String projectID) {
+        String urlAddress2 = "http://192.168.137.1/project6/getuser.php";
+        sp2 = (Spinner) findViewById(R.id.spinner3);
+        new spinnerDownloader2(AddProjectMember.this, urlAddress2, sp2, projectID).execute();
+        sp2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View selectedItemView, int position, long id) {
+                suserID = parent.getSelectedItem().toString();
+
+
+                suserID = suserID.substring(1, suserID.length() - 1);
+                String[] choppedSuserString = suserID.split("=");
+                suserID = choppedSuserString[2];
+                sname = choppedSuserString[1];
+
 
 
             }
@@ -99,18 +129,13 @@ public class AddProjectMember extends AppCompatActivity {
 
             }
         });
-
-        //    projectIDEt = (EditText) findViewById(R.id.etProjID);
-        new spinnerDownloader(AddProjectMember.this, urlAddress, sp).execute();
-
-
     }
 
 
     public void AddProjectMember(View view) {
 
-    //    sprojectID = etProjectID.getText().toString();
-        suserID = etUserID.getText().toString();
+        //    sprojectID = etProjectID.getText().toString();
+        //    suserID = etUserID.getText().toString();
         sposition = etPosition.getText().toString();
 
         if (sprojectString.equals("") || suserID.equals("") || sposition.equals("")) {
@@ -181,7 +206,6 @@ public class AddProjectMember extends AppCompatActivity {
             }
             Toast.makeText(ctx, result, Toast.LENGTH_SHORT).show();
         }
-
 
 
     }

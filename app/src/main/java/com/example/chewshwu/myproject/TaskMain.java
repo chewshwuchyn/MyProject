@@ -36,21 +36,25 @@ import java.util.HashMap;
 
 public class TaskMain extends AppCompatActivity {
 
-    private SharedPreferences preferences;
+    SharedPreferences preferences;
     public static final String PREF_NAME = "PrefKey";
     public static final String KEY_USERID = "user_id";
+    private String userID = "";
+
     String json_string;
     String sprojectString, sprojectID, sprojectName;
+    String projectID, projectName;
     int projectIDS;
     //   EditText projectIDEt;
     Context ctx = this;
     String text;
     ArrayList<spinnerObjProj> proObj;
- //   spinnerObjProj sop = new spinnerObjProj();
+    spinnerObjProj sop ;
+    Spinner sp;
 
-    ArrayList<HashMap<String, String>> spinnerobjpro = new ArrayList<HashMap<String, String>>();
+    ArrayList<HashMap<String, String>> spinnerobjpro;
 
-    final static String urlAddress = "http://192.168.137.1/project6/getprojectlist.php";
+    String urlAddress = "http://192.168.137.1/project6/getprojectlist.php";
     //  String projectName;
 
     @Override
@@ -58,24 +62,34 @@ public class TaskMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maintask);
 
-        Spinner sp = (Spinner) findViewById(R.id.spinner);
+        preferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        userID = preferences.getString("user_id", "0");
 
 
+       sp = (Spinner) findViewById(R.id.spinner);
 
 
+        new spinnerDownloader(TaskMain.this, urlAddress, sp).execute();
 
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            ArrayList<HashMap<String, String>> spinnerobjpro = new ArrayList<HashMap<String, String>>();
+        //    ArrayList<HashMap<String, String>> spinnerobjpro = new ArrayList<HashMap<String, String>>();
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View selectedItemView, int position, long id) {
                 sprojectString = parent.getSelectedItem().toString();
 
-
-                sprojectString = sprojectString.substring(1, sprojectString.length() - 1);
+               sprojectString = sprojectString.substring(1, sprojectString.length() - 1);
                 String[] choppedSprojectString = sprojectString.split("=");
                 sprojectString = choppedSprojectString[2];
                 sprojectName = choppedSprojectString[1];
+
+                int key3=1;
+
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putInt("key3", key3);
+                editor.commit();
+
+
 
 
 
@@ -92,7 +106,7 @@ public class TaskMain extends AppCompatActivity {
         });
 
         //    projectIDEt = (EditText) findViewById(R.id.etProjID);
-        new spinnerDownloader(TaskMain.this, urlAddress, sp).execute();
+
     }
 
     public void ShowAllProject(View view) {
