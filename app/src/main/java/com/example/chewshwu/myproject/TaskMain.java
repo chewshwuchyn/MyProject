@@ -82,13 +82,8 @@ public class TaskMain extends AppCompatActivity {
                 String[] choppedSprojectString = sprojectString.split("=");
                 sprojectString = choppedSprojectString[2];
                 sprojectName = choppedSprojectString[1];
-
-                int key3=1;
-
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putInt("key3", key3);
-                editor.commit();
-
+                String[] choppedSprojectName = sprojectName.split(",");
+                sprojectName = choppedSprojectName[0];
 
 
 
@@ -115,10 +110,15 @@ public class TaskMain extends AppCompatActivity {
 
     public void ShowTask(View view) {
         //  projectID = projectIDEt.getText().toString();
-        SharedPreferences preference = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        String userID = preference.getString("user_id", "0");
-        BackgroundTask3 backgroundTask3 = new BackgroundTask3();
-        backgroundTask3.execute(sprojectString, userID);
+   //     SharedPreferences preference = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+   //     String userID = preference.getString("user_id", "0");
+        Intent intent = new Intent(TaskMain.this, TaskRList.class);
+        intent.putExtra("projectID", sprojectString);
+        intent.putExtra("projectName", sprojectName);
+        startActivity(intent);
+
+     //   BackgroundTask3 backgroundTask3 = new BackgroundTask3();
+     //   backgroundTask3.execute(sprojectString, userID);
     }
 
     public void CreateNewTask(View view) {
